@@ -1,4 +1,21 @@
-<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Smart Notes</title>
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Smart Notes</title>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0b1220">
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Smart Notes">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+
 <style>
 :root{--bg:#f4f7fb;--card:#fff;--txt:#172033;--muted:#718096;--line:#dfe6ef;--blue:#315efb;--red:#ef4444;--orange:#f59e0b;--green:#22c55e;--purple:#7c3aed}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font:14px system-ui,-apple-system,Segoe UI,sans-serif}.app{display:grid;grid-template-columns:235px 1fr;min-height:100vh}.side{background:#0b1220;color:white;padding:20px}.brand{font-size:20px;font-weight:800;margin:5px 8px 25px}.nav button{display:block;width:100%;text-align:left;background:0;border:0;color:#b9c4d5;padding:12px;border-radius:9px;cursor:pointer}.nav button:hover,.nav .on{background:#1b2942;color:white}main{padding:26px;max-width:1450px;width:100%;margin:auto}h1{margin:0 0 4px;font-size:28px}.muted{color:var(--muted)}.top{display:flex;justify-content:space-between;gap:15px;margin-bottom:20px}.btn{padding:10px 14px;border:1px solid var(--line);border-radius:9px;background:white;cursor:pointer;font-weight:650}.primary{background:var(--blue);color:white;border-color:var(--blue)}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}.stat,.panel{background:var(--card);border:1px solid var(--line);border-radius:15px;box-shadow:0 8px 25px #1e35500d}.stat{padding:16px}.stat b{font-size:26px;display:block}.grid{display:grid;grid-template-columns:1fr 340px;gap:16px}.head{padding:15px 17px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between}.list{padding:9px}.task{background:white;border:1px solid var(--line);border-left:6px solid var(--green);border-radius:11px;padding:12px;margin:8px}.task.medium{border-left-color:var(--orange)}.task.high{border-left-color:var(--red)}.task.urgent{border-left-color:var(--purple)}.task.done{opacity:.5}.task.done .title{text-decoration:line-through}.row{display:flex;gap:10px;align-items:flex-start}.check{margin-top:3px;width:19px;height:19px}.title{font-weight:750}.meta{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}.tag{font-size:11px;background:#eef2f7;padding:4px 7px;border-radius:99px}.today{background:#fee2e2;color:#991b1b}.tomorrow{background:#ffedd5;color:#9a3412}.soon{background:#fef9c3;color:#854d0e}.safe{background:#dcfce7;color:#166534}.actions{margin-left:auto;white-space:nowrap}.icon{border:0;background:0;cursor:pointer}.controls{padding:12px;display:flex;gap:8px;border-bottom:1px solid var(--line);flex-wrap:wrap}.controls input,.controls select,.field input,.field select,.field textarea{padding:10px;border:1px solid var(--line);border-radius:9px;background:white}.controls input{flex:1;min-width:180px}.tom{padding:12px;margin:7px;border:1px solid var(--line);border-radius:10px;background:#f8fafc}.week{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;padding:12px}.day{min-height:95px;border:1px solid var(--line);border-radius:9px;padding:8px}.day.now{border:2px solid var(--blue);background:#f4f7ff}.dot{display:block;background:#eaf0ff;border-radius:5px;padding:3px;margin-top:4px;font-size:10px;overflow:hidden;white-space:nowrap}.empty{text-align:center;padding:30px;color:var(--muted)}.modalbg{display:none;position:fixed;inset:0;background:#0008;align-items:center;justify-content:center;padding:15px}.modal{background:white;width:min(580px,100%);border-radius:15px}.form{padding:18px;display:grid;gap:12px}.field label{display:block;font-size:12px;font-weight:700;margin-bottom:5px}.field input,.field select,.field textarea{width:100%}.field textarea{min-height:90px}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.foot{padding:14px 18px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:8px}.toast{position:fixed;right:18px;bottom:18px;background:#111827;color:white;padding:12px 15px;border-radius:9px;display:none}
@@ -49,4 +66,11 @@ function page(id,btn){['home','all','week'].forEach(x=>$(x).style.display=x===id
 function resetData(){if(confirm('Reset ke catatan awal?')){data=seed.map(x=>({...x}));render();toast('Data awal dipulihkan')}}
 function toast(s){$('toast').textContent=s;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',1800)}
 let h=new Date().getHours();$('greet').textContent=(h<11?'Selamat pagi':h<15?'Selamat siang':h<18?'Selamat sore':'Selamat malam')+' 👋';$('date').textContent=new Intl.DateTimeFormat('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(new Date());render();
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(() => console.log('Smart Notes PWA aktif ✓'))
+      .catch(err => console.error('Service Worker gagal:', err));
+  });
+}
 </script></body></html>
